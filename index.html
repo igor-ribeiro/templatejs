@@ -9,8 +9,8 @@
   <h1>Template JS</h1>
 
   <div data-controller="filesController">
-    <ul data-repeat="files">
-      <li data-click="open()">{{this}}</li>
+    <ul data-repeat="menu">
+      <li data-click="open('{{text}}')"><a href="{{url}}">{{text}}</a></li>
     </ul>
 
   </div>

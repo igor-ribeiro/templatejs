@@ -46,10 +46,10 @@
                 }
 
                 tpl = tpl.replace(match, result);
-
-                newHTML.push(tpl);
               }
             });
+            
+            newHTML.push(tpl);
           }
         });
 
@@ -64,15 +64,12 @@
     var elements   = controllerElement.querySelectorAll('[data-click]');
 
     if (elements.length > 0) {
-      controllerElement.addEventListener('click', function (event) {
-        var target = event.target;
 
-        [].forEach.call(elements, function (element) {
-          if (element === target) {
-            var command = ['controller.', element.dataset.click].join('');
+      [].forEach.call(elements, function (element) {
+        element.addEventListener('click', function (event) {
+          var command = ['controller.', element.dataset.click].join('');
 
-            eval(command);
-          }
+          eval(command);
         });
       });
     }

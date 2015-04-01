@@ -3,10 +3,28 @@
 
   app
     .controller('filesController', {
-      files: ['index.html', 'app.js', 'styles.css'],
+      menu:
+      [
+        {
+          'text': 'Home',
+          'url': '#/home'
+        },
+        {
+          'text': 'Articles',
+          'url': '#/articles'
+        },
+        {
+          'text': 'Portifolio',
+          'url': '#/portifolio'
+        },
+        {
+          'text': 'Contact',
+          'url': '#/contact'
+        }
+      ],
       
-      open: function () {
-        console.log(this.files);
+      open: function (arg) {
+        console.log(arg);
       }
     });
     

@@ -8,9 +8,11 @@
 <body>
   <h1>Template JS</h1>
 
-  <ul data-controller="filesController" data-repeat="files">
-    <li>{{this}}</li>
-  </ul>
+  <div data-controller="filesController">
+    <ul data-repeat="files in filesController.files">
+      <li data-click="open()">{{this}}</li>
+    </ul>
+  </div>
 
   <script src="js/template.js"></script>
 </body>

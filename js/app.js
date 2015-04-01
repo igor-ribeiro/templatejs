@@ -5,11 +5,9 @@
     .controller('filesController', {
       files: ['index.html', 'app.js', 'styles.css'],
       
-      add: function () {
-        this.files.push('template.js');
-
+      open: function () {
         console.log(this.files);
       }
     });
-
+    
 }());

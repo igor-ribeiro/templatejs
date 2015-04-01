@@ -10,10 +10,9 @@
 
   <div data-controller="filesController">
     <ul data-repeat="files">
-      <li>{{this}}</li>
+      <li data-click="open()">{{this}}</li>
     </ul>
 
-    <button data-click="add()">Add file</button>
   </div>
 
   <script src="js/template.js"></script>

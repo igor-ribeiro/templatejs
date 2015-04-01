@@ -39,9 +39,6 @@
               if (regex.test(match)) {
                 var result = regex.exec(match)[0];
 
-                console.log(data);
-
-
                 if (result === 'this' || result === dataValue) {
                   result = item;
                 } else {
@@ -75,9 +72,6 @@
             var command = ['controller.', element.dataset.click].join('');
 
             eval(command);
-
-            self.repeatHandler(controllerElement);
-
           }
         });
       });

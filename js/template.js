@@ -1,3 +1,30 @@
+;(function (win) {
+  'use strict';
+
+  win.Template = function () {
+    this.controllers = {};
+  }
+
+  Template.prototype.controller = function (controllerName, controllerFunction) {
+    this.controllers[controllerName] = controllerFunction;
+
+    var controller = this.controllers[controllerName]();
+
+  }
+
+}(window));
+
+var app = new Template();
+
+app.controller('filesController', function () {
+    this.files = ['index.html', 'javascript.js', 'style.css'];
+
+    return this;
+  });
+
+
+
+/*
 ;(function () {
   'use strict';
 
@@ -38,3 +65,4 @@
     $el.innerHTML = $html.join('');
   });
 }());
+*/

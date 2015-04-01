@@ -9,11 +9,14 @@
   <h1>Template JS</h1>
 
   <div data-controller="filesController">
-    <ul data-repeat="files in filesController.files">
-      <li data-click="open()">{{this}}</li>
+    <ul data-repeat="files">
+      <li>{{this}}</li>
     </ul>
+
+    <button data-click="add()">Add file</button>
   </div>
 
   <script src="js/template.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

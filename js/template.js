@@ -6,32 +6,82 @@
     this.$elements    = [];
   };
 
-  Template.prototype.clickHadler = function (controllerElement) {
-    var self       = this;
+  Template.prototype.repeatHandler = function (controllerElement) {
+    var elements   = controllerElement.querySelectorAll('[data-repeat]');
     var controller = this.$controllers[controllerElement.dataset.controller];
-    var elements   = document.querySelectorAll('[data-click]');
 
-    controllerElement.addEventListener('click', function (event) {
-      var target = event.target;
-
+    if (elements.length > 0) {
       [].forEach.call(elements, function (element) {
-        if (element === target) {
-          var command = ['controller.', element.dataset.click].join('');
+        var template   = element.innerHTML;
+        var exp        = /({{\s*\w+\s*}})/g;
+        var newHTML    = [];
+        var repeatInfo = element.dataset.repeat.split(' in ');
+        var dataValue  = repeatInfo[0];
+        var data;
 
-          eval(command);
+        if (repeatInfo.length > 1) {
+          data = controller[repeatInfo[1]];
+        } else {
+          data = controller[repeatInfo[0]];
         }
-      });
-    });
 
-    // [].forEach.call(elements, function (element) {
-    //   element.addEventListener('click', function () {
-    //     eval('controller.' + element.dataset.click);
-    //   })
-    // })
+        element.innerHTML = '';
+
+        [].forEach.call(data, function (item) {
+          var tpl = template;
+
+          if (exp.test(tpl)) {
+            var matches = tpl.match(exp);
+
+            [].forEach.call(matches, function (match) {
+              var regex = RegExp('\\w+');
+
+              if (regex.test(match)) {
+                var result = regex.exec(match)[0];
+
+                console.log(data);
+
+
+                if (result === 'this' || result === dataValue) {
+                  result = item;
+                } else {
+                  result = item[result];
+                }
+
+                tpl = tpl.replace(match, result);
+
+                newHTML.push(tpl);
+              }
+            });
+          }
+        });
+
+        element.innerHTML = newHTML.join('');
+      })
+    }
   };
 
-  Template.prototype.repeatHandler = function () {
+  Template.prototype.clickHandler = function (controllerElement) {
+    var self       = this;
+    var controller = this.$controllers[controllerElement.dataset.controller];
+    var elements   = controllerElement.querySelectorAll('[data-click]');
 
+    if (elements.length > 0) {
+      controllerElement.addEventListener('click', function (event) {
+        var target = event.target;
+
+        [].forEach.call(elements, function (element) {
+          if (element === target) {
+            var command = ['controller.', element.dataset.click].join('');
+
+            eval(command);
+
+            self.repeatHandler(controllerElement);
+
+          }
+        });
+      });
+    }
   };
 
   Template.prototype.controller = function (controllerName, controllerFunction) {
@@ -43,62 +93,10 @@
 
     this.$elements.push(controllerElement);
 
-    this.clickHadler(controllerElement);
+    this.repeatHandler(controllerElement);
+    this.clickHandler(controllerElement);
+
+    return this;
   };
 
 }(window));
-
-var app = new Template();
-
-app.controller('filesController', {
-  files: ['index.html', 'app.js', 'styles.css'],
-  
-  open: function () {
-    console.log(this.files);
-  }
-});
-
-
-
-/*
-;(function () {
-  'use strict';
-
-  var $elements = document.querySelectorAll('[data-repeat]');
-
-  [].forEach.call($elements, function ($el) {
-    var $template = $el.innerHTML;
-    var $html     = [];
-    var data      = window[$el.dataset.repeat];
-    var reg       = /({{\w+}})/g;
-
-    $el.innerHTML = '';
-
-    for (var a in data) {
-      $html.push($template);
-
-      if (reg.test($html[a])) {
-        var matches = $html[a].match(reg);
-
-        for (var i in matches) {
-          var regex = RegExp('\\w+');
-
-          if (regex.test(matches[i])) {
-            var result = regex.exec(matches[i])[0];
-
-            if (result === 'this') {
-              result = data[a];
-            } else {
-              result = data[a][result];
-            }
-
-            $html[a] = $html[a].replace(matches[i], result);
-          }
-        }
-      }
-    }
-
-    $el.innerHTML = $html.join('');
-  });
-}());
-*/
